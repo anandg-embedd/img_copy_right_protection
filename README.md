@@ -1,29 +1,29 @@
-# Simple_Image_Encryption_DMA
-This is a simple image encryption algorithm based on DMA (Diffused Mandelbrot set + Arnold map) system.
+# ImageEncryption
+Author: Qingfeng Li         
 
-This is a simple image encryption code for beginers to practice the matlab code. The code exploits the properties of mandelbrot set and arnold map and,it provides cipher image with maximum security.
- 
- Note: If you are using my code for your system or project, you should always cite my paper as a reference
- <a href ="https://docs.google.com/document/d/1AbCxFoUhdOCppM8novgCdOv0F9mqYe7HlBU7yX7Svx0/edit?usp=sharing">Click here to see the publications.</a>
+Contact way: descosmos@163.com
 
+Sci url: https://link.springer.com/article/10.1007/s11042-023-15550-3
 
-     a=imread('image.png') : Input your image 
-     Input your initial values for arnold map
-     
-    Functions: 
- 
-    Main fuction           : main.m 
- 
-    Encryptiion function   : Encry_DMA.m;
- 
-    Decryption function    : Decry_DMA.m
-    
-    Arnold map function    : arnold.m
-    
-    Mandelbrot setf unction: md.m
- 
+## Features
+***
+ImageEncrypion is a repertory containing several image encryption algorithms.
+All availiable algorithms are based on matlab.
 
+## Developing Enviorment
+- MATLAB R2016a
 
+Code relative to sci is stored in `.\ImageEncryption-master\sci` folder.
 
-    %%%%%%%%%%%-------------------$$$$$$$$>>>>> BY jithin K C <<<<$$$$$$$$$-----------------%%%%%%%%%%%%%% @@@ 
-    for any queries contact: jithinkc22@gmail.com
+## Citation
+If you find this code helpful for your research, please cite:
+```
+@article{li2023image,
+  title={An image encryption algorithm based on 6-dimensional hyper chaotic system and DNA encoding},
+  author={Li, Qingfeng and Chen, Lei},
+  journal={Multimedia Tools and Applications},
+  pages={1--18},
+  year={2023},
+  publisher={Springer}
+}
+```

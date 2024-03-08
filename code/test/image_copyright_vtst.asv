@@ -6,21 +6,23 @@ addpath('../../image/')
 %% cat map
 principle_of_dna = [65,67,71,84];
 %% Image load
-original_img = imread('lena.jpg');
+original_img = imresize(imread('lena.jpg'),[512,512]);
 if(length(size(original_img))>2)
     original_img = rgb2gray(original_img);
 end
 figure(1), subplot(3,2,1), imshow(original_img, []), title('orginal image');
 
-logo_img = imread('cameraman.jpg');
+logo_img = imresize(imread('cameraman.jpg'),[133 133]);
 if(length(size(logo_img))>2)
     logo_img = rgb2gray(logo_img);
 end
-
 figure(1),subplot(3,2,2), imshow(logo_img, []), title('Logo image');
 
+%% feature extraction 
+svd_img = feat_ext(original_img);
+
 %% Geberate key for original image
-private_o_key = generate_key(original_img);
+private_o_key = generate_key(svd_img);
 figure(1),subplot(3,2,3), imshow(private_o_key, []), title('private_key');
 
 %% Geberate key for logo image
@@ -28,7 +30,7 @@ private_l_key = generate_key(logo_img);
 figure(1),subplot(3,2,4), imshow(private_l_key, []), title('private_key');
 
 %% Encrypted image
-encrypted_o_img = encrypt_gray_image(original_img, private_o_key, principle_of_dna);
+encrypted_o_img = encrypt_gray_image(svd_img, private_o_key, principle_of_dna);
 figure(1),subplot(3,2,5), imshow(encrypted_o_img, []), title('encrypted_original_image');
 
 encrypted_l_img = encrypt_gray_image(logo_img, private_l_key, principle_of_dna);
@@ -38,17 +40,23 @@ figure(1),subplot(3,2,6), imshow(encrypted_l_img, []), title('encrypted_logo_ima
 water_img = bitxor(encrypted_o_img, encrypted_l_img);
 figure(2),subplot(2,2,1), imshow(water_img),title('Watermarked image')
 
+
 %% Verification flow encryped original image, encryped watermark image, keys
+%% Geberate key for original image
+%% feature extraction 
+original_img = imnoise(original_img,'gaussian',0,001);
+figure(4), imshow(original_img), title('Image with noise');
+svd_img = feat_ext(original_img);
 %% Encrypted image
-encrypted_o_img = encrypt_gray_image(original_img, private_o_key, principle_of_dna);
-figure(1),subplot(3,2,5), imshow(encrypted_o_img, []), title('encrypted_original_image');
+encrypted_o_img = encrypt_gray_image(svd_img, private_o_key, principle_of_dna);
+
 %% Remove water marked image
 dwater_img = bitxor(encrypted_o_img, water_img);
 figure(2),subplot(2,2,2), imshow(dwater_img),title('De-Watermarked image')
 
 %% Decryped image
 decrypted_o_img = decrypt_gray_image(encrypted_o_img, private_o_key, principle_of_dna);
-figure(2),subplot(2,2,3) ,imshow(decrypted_o_img,[]), title('decrypted_original image');
+figure(2),subplot(2,2,3) ,imshow(decrypted_o_img,[]), title('decrypted_feature_img');
 
 decrypted_l_img = decrypt_gray_image(dwater_img, private_l_key, principle_of_dna);
 figure(2),subplot(2,2,4) ,imshow(decrypted_l_img,[]), title('decrypted_logo image');
@@ -56,3 +64,4 @@ figure(2),subplot(2,2,4) ,imshow(decrypted_l_img,[]), title('decrypted_logo imag
 %% Result analysis
 psn = psnr(decrypted_l_img, logo_img);
 figure(3), imhist(decrypted_l_img), title(sprintf('Peak signal noise ratio = %f', psn));
+
